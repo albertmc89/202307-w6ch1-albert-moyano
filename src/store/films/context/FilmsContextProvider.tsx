@@ -19,8 +19,8 @@ const FilmsContextProvider = ({
 
   const filmsContextValue = useMemo(
     (): FilmsContextStructure => ({
-      films,
-      loadFilms,
+      films: films,
+      loadFilms: loadFilms,
     }),
     [films, loadFilms],
   );
