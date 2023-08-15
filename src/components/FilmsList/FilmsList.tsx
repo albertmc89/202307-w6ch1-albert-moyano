@@ -1,21 +1,18 @@
+import { useContext } from "react";
+import FilmsContext from "../../store/films/context/FilmsContext";
 import FilmCard from "../FilmCard/FilmCard";
 import "./FilmsList.css";
 
 const FilmsList = (): React.ReactElement => {
+  const { films } = useContext(FilmsContext);
+
   return (
     <ul className="films">
-      <li>
-        <FilmCard />
-      </li>
-      <li>
-        <FilmCard />
-      </li>
-      <li>
-        <FilmCard />
-      </li>
-      <li>
-        <FilmCard />
-      </li>
+      {films.map((film) => (
+        <li key={film.id}>
+          <FilmCard films={film} />
+        </li>
+      ))}
     </ul>
   );
 };
