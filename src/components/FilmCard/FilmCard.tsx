@@ -4,11 +4,11 @@ import Button from "../Button/Button";
 import "./FilmCard.css";
 
 interface FilmCardProps {
-  films: Film;
+  film: Film;
 }
 
 const FilmCard = ({
-  films: { title, poster, director, year },
+  film: { title, poster, director, year },
 }: FilmCardProps): React.ReactElement => {
   return (
     <article className="film">
@@ -18,7 +18,7 @@ const FilmCard = ({
       <img
         className="film__poster"
         src={poster}
-        alt="Cartel de 'Viaje a Darjeeling'"
+        alt={`Cartel de ${title}`}
         width="300"
         height="406"
       />
