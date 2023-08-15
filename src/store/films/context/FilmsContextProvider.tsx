@@ -9,7 +9,7 @@ const FilmsContextProvider = ({
 }: PropsWithChildren): React.ReactElement => {
   const [films, setFilms] = useState<Film[]>([]);
 
-  const { getFilms } = useFilmsApi();
+  const { getFilms, addFilm: addFilmToOrigin } = useFilmsApi();
 
   const loadFilms = useCallback(async () => {
     const originFilms = await getFilms();
@@ -17,12 +17,22 @@ const FilmsContextProvider = ({
     setFilms([...originFilms]);
   }, [getFilms]);
 
+  const addFilm = useCallback(
+    async (film: Film) => {
+      const newFilm = await addFilmToOrigin(film);
+
+      setFilms((films) => [...films, newFilm]);
+    },
+    [addFilmToOrigin],
+  );
+
   const filmsContextValue = useMemo(
     (): FilmsContextStructure => ({
-      films: films,
-      loadFilms: loadFilms,
+      films,
+      loadFilms,
+      addFilm,
     }),
-    [films, loadFilms],
+    [films, loadFilms, addFilm],
   );
   return (
     <FilmsContext.Provider value={filmsContextValue}>
