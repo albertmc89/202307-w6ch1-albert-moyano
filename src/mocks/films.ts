@@ -1,4 +1,4 @@
-import { Film } from "../types";
+import { Film, NewFilm } from "../types";
 
 export const filmsMock: Film[] = [
   {
@@ -31,3 +31,10 @@ export const filmsMock: Film[] = [
     year: 2007,
   },
 ];
+
+export const newFilmMock: NewFilm = {
+  title: "Háblame",
+  poster: "https://pics.filmaffinity.com/Haablame-709339511-large.jpg",
+  director: "Danny Philippou",
+  year: 2023,
+};
