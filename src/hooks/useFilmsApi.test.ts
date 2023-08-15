@@ -1,5 +1,7 @@
 import { renderHook } from "@testing-library/react";
 import { filmsMock } from "../mocks/films";
+import { handlersError } from "../mocks/handlers";
+import { server } from "../mocks/server";
 import useFilmsApi from "./useFilmsApi";
 
 describe("Given a 'getFilms' function", () => {
@@ -10,6 +12,21 @@ describe("Given a 'getFilms' function", () => {
       const films = await result.current.getFilms();
 
       expect(films).toStrictEqual(filmsMock);
+    });
+
+    test("Then it should throw an error when the request fails to get the film collection from the Api rest", async () => {
+      server.resetHandlers(...handlersError);
+      const expectedError = new Error("Films couldn't be loaded");
+
+      const {
+        result: {
+          current: { getFilms },
+        },
+      } = renderHook(() => useFilmsApi());
+
+      const films = getFilms();
+
+      expect(films).rejects.toThrowError(expectedError);
     });
   });
 });

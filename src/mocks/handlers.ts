@@ -6,3 +6,9 @@ export const handlers = [
     return res(ctx.status(200), ctx.json(filmsMock));
   }),
 ];
+
+export const handlersError = [
+  rest.get(import.meta.env.VITE_API_FILMS_URL, (_req, res, ctx) => {
+    return res(ctx.status(404, "Films couldn't be loaded"));
+  }),
+];
