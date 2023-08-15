@@ -15,18 +15,21 @@ const useFilmsApi = () => {
     }
   }, [apiUrl]);
 
-  const addFilm = async (film: Film) => {
-    const response = await fetch(apiUrl, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(film),
-    });
-    const newFilm = (await response.json()) as Film;
+  const addFilm = useCallback(
+    async (film: Partial<Film>) => {
+      const response = await fetch(apiUrl, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify(film),
+      });
+      const newFilm = (await response.json()) as Film;
 
-    return newFilm;
-  };
+      return newFilm;
+    },
+    [apiUrl],
+  );
 
   return { getFilms, addFilm };
 };

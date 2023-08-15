@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react";
-import { filmsMock } from "../mocks/films";
-import { handlersError } from "../mocks/handlers";
+import { filmsMock, newFilmMock } from "../mocks/films";
+import { handlersError, postHandlers } from "../mocks/handlers";
 import { server } from "../mocks/server";
 import useFilmsApi from "./useFilmsApi";
 
@@ -18,15 +18,22 @@ describe("Given a 'getFilms' function", () => {
       server.resetHandlers(...handlersError);
       const expectedError = new Error("Films couldn't be loaded");
 
-      const {
-        result: {
-          current: { getFilms },
-        },
-      } = renderHook(() => useFilmsApi());
+      const { result } = renderHook(() => useFilmsApi());
 
-      const films = getFilms();
+      const { getFilms } = result.current;
 
-      expect(films).rejects.toThrowError(expectedError);
+      const error = getFilms();
+
+      expect(error).rejects.toThrowError(expectedError);
+    });
+
+    test("Then it should create a new film and add to list of films", async () => {
+      server.resetHandlers(...postHandlers);
+      const { result } = renderHook(() => useFilmsApi());
+
+      const createdFilm = await result.current.addFilm(newFilmMock);
+
+      expect(createdFilm).toStrictEqual(newFilmMock);
     });
   });
 });
