@@ -1,24 +1,27 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import { BrowserRouter } from "react-router-dom";
 import { filmsMock } from "../../mocks/films";
-import FilmsContext from "../../store/films/context/FilmsContext";
-import Count from "./Count";
+import FilmsListPage from "../../pages/FilmsListPage/FilmsListPage";
+import FilmsContextProvider from "../../store/films/context/FilmsContextProvider";
 
 describe("Given a Count component", () => {
   describe("When it's rendered", () => {
-    test("Then it should show the number of the total films list", () => {
+    test("Then it should show 'Listando 4 películas", async () => {
       const numberOfFilms = filmsMock.length;
       const countText = `Listando ${numberOfFilms} películas`;
-      const loadFilms = vi.fn();
 
       render(
-        <FilmsContext.Provider value={{ loadFilms, films: filmsMock }}>
-          <Count />
-        </FilmsContext.Provider>,
+        <FilmsContextProvider>
+          <BrowserRouter>
+            <FilmsListPage />
+          </BrowserRouter>
+        </FilmsContextProvider>,
       );
 
-      const spanElement = screen.getByText(countText);
+      const spanElement = await waitFor(() => screen.getByLabelText(countText));
 
       expect(spanElement).toBeInTheDocument();
+      expect(spanElement).toHaveTextContent("Listando 4 películas");
     });
   });
 });

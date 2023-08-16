@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react";
 import { filmsMock, newFilmMock } from "../mocks/films";
-import { handlersError, postHandlers } from "../mocks/handlers";
+import { handlers, handlersError } from "../mocks/handlers";
 import { server } from "../mocks/server";
 import useFilmsApi from "./useFilmsApi";
 
@@ -28,7 +28,7 @@ describe("Given a 'getFilms' function", () => {
     });
 
     test("Then it should create a new film and add to list of films", async () => {
-      server.resetHandlers(...postHandlers);
+      server.resetHandlers(...handlers);
       const { result } = renderHook(() => useFilmsApi());
 
       const createdFilm = await result.current.addFilm(newFilmMock);
